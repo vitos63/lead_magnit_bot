@@ -31,7 +31,7 @@ class FirstQuestionsService:
         scores = Scores.model_validate_json(await openrouter.ask_json(RESULT_PROMPT, answers))
         await bot.send_message(tg_id, format_result(scores), reply_markup=REVIEW_KEYBOARD)
         async with SessionLocal() as session:
-            await UserRepository(session).set_stage(tg_id, Stage.GET_RESULT)
+            await UserRepository(session).advance_stage(tg_id, Stage.GET_RESULT)
 
     @staticmethod
     def format_answer(answer: bool | str) -> str:

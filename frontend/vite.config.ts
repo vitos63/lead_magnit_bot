@@ -5,6 +5,10 @@ import { defineConfig } from 'vite'
 export default defineConfig({
   plugins: [react()],
   server: {
-    proxy: { '/first_questions': 'http://127.0.0.1:8000', '/users': 'http://127.0.0.1:8000' },
+    proxy: {
+      '/first_questions': 'http://127.0.0.1:8000',
+      '/pre_questionnaire': 'http://127.0.0.1:8000',
+      '/users': 'http://127.0.0.1:8000',
+    },
   },
 })

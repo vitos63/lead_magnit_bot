@@ -1,7 +1,10 @@
 declare global {
   interface Window {
-    Telegram?: { WebApp: { initDataUnsafe: { user?: { id: number } } } }
+    Telegram?: { WebApp: { initDataUnsafe: { user?: { id: number; username?: string } } } }
   }
 }
 
-export const tgId = window.Telegram?.WebApp.initDataUnsafe.user?.id
+const user = window.Telegram?.WebApp.initDataUnsafe.user
+
+export const tgId = user?.id
+export const tgUsername = user?.username

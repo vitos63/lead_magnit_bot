@@ -87,8 +87,8 @@ p {
   opacity: 0;
 }
 
-textarea {
-  min-height: 140px;
+textarea,
+input[type='text'] {
   padding: 12px;
   border: 1px solid transparent;
   border-radius: 12px;
@@ -96,11 +96,28 @@ textarea {
   background: var(--surface);
   color: var(--text);
   font: inherit;
+}
+
+textarea {
+  min-height: 140px;
   resize: vertical;
 }
 
-textarea:focus {
+textarea:focus,
+input[type='text']:focus {
   border-color: var(--accent);
+}
+
+.consent {
+  display: flex;
+  gap: 10px;
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+
+.consent input {
+  margin-top: 3px;
+  accent-color: var(--accent);
 }
 
 .nav {

@@ -1,10 +1,23 @@
 export type Answer = boolean | string
 
-type Question = {
+export type Question = {
   name: string
   text: string
-  type: 'bool' | 'text'
+  type: 'bool' | 'text' | 'contact'
+  labels?: [string, string]
 }
+
+export const PRE_QUESTIONS: Question[] = [
+  { name: 'what_result_you_want_to_get', text: 'Какой результат вы хотите получить в ближайшие 2–3 месяца?', type: 'text' },
+  { name: 'what_mostly_hinder', text: 'Что сейчас больше всего мешает вам увеличить количество заявок?', type: 'text' },
+  {
+    name: 'are_you_ready',
+    text: 'Готовы ли вы внедрять изменения в ближайший месяц?',
+    type: 'bool',
+    labels: ['Да, готов(а) действовать', 'Пока изучаю варианты'],
+  },
+  { name: 'contact', text: 'Как с вами удобнее связаться?', type: 'contact' },
+]
 
 export const QUESTIONS: Question[] = [
   {

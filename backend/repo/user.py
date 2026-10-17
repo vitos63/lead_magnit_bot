@@ -15,7 +15,18 @@ class UserRepository:
         self.session.add(user)
         await self.session.commit()
 
-    async def set_stage(self, tg_id: int, stage: Stage) -> None:
+    async def set_contact(self, tg_id: int, contact: str) -> None:
         user = await self.get(tg_id)
-        user.stage = stage
+        user.contact = contact
         await self.session.commit()
+
+    async def give_consent(self, tg_id: int) -> None:
+        user = await self.get(tg_id)
+        user.consent = True
+        await self.session.commit()
+
+    async def advance_stage(self, tg_id: int, stage: Stage) -> None:
+        user = await self.get(tg_id)
+        if list(Stage).index(stage) > list(Stage).index(user.stage):
+            user.stage = stage
+            await self.session.commit()
