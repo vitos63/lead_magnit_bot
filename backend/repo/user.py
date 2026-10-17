@@ -1,6 +1,7 @@
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from models import User
+from models.enums import Stage
 
 
 class UserRepository:
@@ -12,4 +13,9 @@ class UserRepository:
 
     async def add(self, user: User) -> None:
         self.session.add(user)
+        await self.session.commit()
+
+    async def set_stage(self, tg_id: int, stage: Stage) -> None:
+        user = await self.get(tg_id)
+        user.stage = stage
         await self.session.commit()

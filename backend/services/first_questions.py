@@ -1,10 +1,14 @@
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from bot import bot
+from bot.keyboards.review import REVIEW_KEYBOARD
 from bot.texts.result import format_result
 from clients.ai.openrouter import openrouter
 from clients.ai.prompts import RESULT_PROMPT
+from database import SessionLocal
+from models.enums import Stage
 from repo.first_questions import FirstQuestionsRepository
+from repo.user import UserRepository
 from schemas.first_questions import QUESTION_TEXTS, QuestionAnswer, Scores
 
 
@@ -25,7 +29,9 @@ class FirstQuestionsService:
     @staticmethod
     async def send_result(tg_id: int, answers: str) -> None:
         scores = Scores.model_validate_json(await openrouter.ask_json(RESULT_PROMPT, answers))
-        await bot.send_message(tg_id, format_result(scores))
+        await bot.send_message(tg_id, format_result(scores), reply_markup=REVIEW_KEYBOARD)
+        async with SessionLocal() as session:
+            await UserRepository(session).set_stage(tg_id, Stage.GET_RESULT)
 
     @staticmethod
     def format_answer(answer: bool | str) -> str:

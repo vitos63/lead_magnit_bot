@@ -9,3 +9,9 @@ export async function saveAnswer(question: string, answer: Answer) {
   })
   if (!response.ok) throw new Error(`HTTP ${response.status}`)
 }
+
+export async function getStage(): Promise<string> {
+  const response = await fetch(`/users/${tgId}`)
+  if (!response.ok) throw new Error(`HTTP ${response.status}`)
+  return (await response.json()).stage
+}

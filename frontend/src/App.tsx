@@ -1,16 +1,23 @@
-import { useState } from 'react'
-import { saveAnswer } from './api'
+import { useEffect, useState } from 'react'
+import { getStage, saveAnswer } from './api'
 import { QUESTIONS, type Answer } from './questions'
+import ReviewChoice from './ReviewChoice'
 import { tgId } from './telegram'
 
 export default function App() {
+  const [stage, setStage] = useState<string | null>(null)
   const [index, setIndex] = useState(0)
   const [answers, setAnswers] = useState<Record<string, Answer>>({})
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState('')
 
+  useEffect(() => {
+    if (tgId) getStage().then(setStage).catch(() => setStage('START'))
+  }, [])
+
   if (!tgId) return <p>Откройте форму из Telegram-бота</p>
-  if (index === QUESTIONS.length) return <p>Спасибо, ответы сохранены!</p>
+  if (stage === null) return <p>Загрузка…</p>
+  if (stage === 'GET_RESULT' || index === QUESTIONS.length) return <ReviewChoice />
 
   const { name, text, type } = QUESTIONS[index]
   const answer = answers[name]
