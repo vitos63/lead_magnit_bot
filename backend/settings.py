@@ -9,6 +9,7 @@ class Settings(BaseSettings):
     DATABASE_URL: str
     BOT_TOKEN: str
     WEBAPP_URL: str
+    OPENROUTER_API_KEY: str
 
 
 settings = Settings()
