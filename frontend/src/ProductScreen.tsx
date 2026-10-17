@@ -16,7 +16,9 @@ export default function ProductScreen({ id, price, onBack }: Props) {
   const [paying, setPaying] = useState(false)
   const [error, setError] = useState('')
 
-  useEffect(() => window.scrollTo(0, 0), [])
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [])
 
   async function handleBuy() {
     setPaying(true)

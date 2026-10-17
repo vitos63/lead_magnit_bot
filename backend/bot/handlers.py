@@ -15,8 +15,8 @@ router = Router()
 @router.message(CommandStart())
 async def start(message: Message) -> None:
     async with SessionLocal() as session:
-        user = await UserService(session).get_or_add(
-            User(tg_id=message.from_user.id, username=message.from_user.username)
-        )
-    keyboard = QUESTIONS_KEYBOARD if user.stage == Stage.START else REVIEW_KEYBOARD
-    await message.answer("Привет!", reply_markup=keyboard)
+        service = UserService(session)
+        user = await service.get_or_add(User(tg_id=message.from_user.id, username=message.from_user.username))
+        keyboard = QUESTIONS_KEYBOARD if user.stage == Stage.START else REVIEW_KEYBOARD
+        sent = await message.answer("Привет!", reply_markup=keyboard)
+        await service.set_start_message_id(user.tg_id, sent.message_id)

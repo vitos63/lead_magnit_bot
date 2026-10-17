@@ -17,3 +17,4 @@ class User(Base):
     consent: Mapped[bool] = mapped_column(default=False)
     contact: Mapped[str | None]
     subscription: Mapped[bool] = mapped_column(default=False)
+    start_message_id: Mapped[int | None]

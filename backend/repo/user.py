@@ -20,6 +20,11 @@ class UserRepository:
         user.contact = contact
         await self.session.commit()
 
+    async def set_start_message_id(self, tg_id: int, message_id: int) -> None:
+        user = await self.get(tg_id)
+        user.start_message_id = message_id
+        await self.session.commit()
+
     async def give_consent(self, tg_id: int) -> None:
         user = await self.get(tg_id)
         user.consent = True

@@ -1,4 +1,4 @@
-from sqlalchemy import BigInteger, ForeignKey
+from sqlalchemy import JSON, BigInteger, ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column
 
 from models.base import Base
@@ -20,3 +20,4 @@ class FirstQuestions(Base):
     has_next_step: Mapped[bool | None]
     pin_post: Mapped[bool | None]
     client_must_to_do: Mapped[str | None]
+    scores: Mapped[dict | None] = mapped_column(JSON)

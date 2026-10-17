@@ -77,6 +77,10 @@ ul {
   background: var(--surface);
 }
 
+.result {
+  white-space: pre-line;
+}
+
 .price s {
   color: var(--muted);
 }

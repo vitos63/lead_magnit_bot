@@ -1,3 +1,6 @@
+from contextlib import suppress
+
+from aiogram.exceptions import TelegramBadRequest
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from bot import bot
@@ -26,12 +29,28 @@ class FirstQuestionsService:
             for number, (question, text) in enumerate(QUESTION_TEXTS.items(), 1)
         )
 
+    async def get_result(self, tg_id: int) -> str | None:
+        questions = await self.repository.get(tg_id)
+        if questions and questions.scores:
+            return format_result(Scores.model_validate(questions.scores))
+        return None
+
     @staticmethod
     async def send_result(tg_id: int, answers: str) -> None:
         scores = Scores.model_validate_json(await openrouter.ask_json(RESULT_PROMPT, answers))
         await bot.send_message(tg_id, format_result(scores), reply_markup=REVIEW_KEYBOARD)
         async with SessionLocal() as session:
-            await UserRepository(session).advance_stage(tg_id, Stage.GET_RESULT)
+            user_repository = UserRepository(session)
+            await FirstQuestionsRepository(session).set_scores(tg_id, scores.model_dump())
+            await user_repository.advance_stage(tg_id, Stage.GET_RESULT)
+            user = await user_repository.get(tg_id)
+        await FirstQuestionsService.remove_questions_button(tg_id, user.start_message_id)
+
+    @staticmethod
+    async def remove_questions_button(tg_id: int, message_id: int | None) -> None:
+        if message_id:
+            with suppress(TelegramBadRequest):
+                await bot.edit_message_reply_markup(chat_id=tg_id, message_id=message_id)
 
     @staticmethod
     def format_answer(answer: bool | str) -> str:

@@ -20,6 +20,11 @@ export async function getStage(): Promise<string> {
   return (await response.json()).stage
 }
 
+export async function getResult(): Promise<string> {
+  const response = await request(`/first_questions/${tgId}/result`)
+  return (await response.json()).text
+}
+
 export async function openPreQuestionnaire() {
   await request(`/pre_questionnaire/${tgId}/open`, {})
 }

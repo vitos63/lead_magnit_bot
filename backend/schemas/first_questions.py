@@ -63,3 +63,7 @@ class Scores(BaseModel):
     offer: int
     traffic: int
     telegram: int
+
+
+class ResultText(BaseModel):
+    text: str
