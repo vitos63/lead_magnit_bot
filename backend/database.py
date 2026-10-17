@@ -1,8 +1,8 @@
 from sqlalchemy.ext.asyncio import async_sessionmaker, create_async_engine
 
-DATABASE_URL = "postgresql+asyncpg://user:password@localhost:5432/lead_magnit_bot"
+from settings import settings
 
-engine = create_async_engine(DATABASE_URL)
+engine = create_async_engine(settings.DATABASE_URL)
 SessionLocal = async_sessionmaker(engine, expire_on_commit=False)
 
 

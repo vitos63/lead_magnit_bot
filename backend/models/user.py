@@ -11,8 +11,7 @@ class User(Base):
     __tablename__ = "users"
 
     tg_id: Mapped[int] = mapped_column(BigInteger, primary_key=True, autoincrement=False)
-    name: Mapped[str | None]
-    username: Mapped[str]
+    username: Mapped[str | None]
     start_date: Mapped[datetime] = mapped_column(server_default=func.now())
     stage: Mapped[Stage] = mapped_column(default=Stage.START)
     consent: Mapped[bool] = mapped_column(default=False)
