@@ -4,7 +4,11 @@ from settings import settings
 
 
 class OpenRouterClient:
-    MODEL = "google/gemma-4-31b-it:free"
+    MODELS = [
+        "nvidia/nemotron-3-super-120b-a12b:free",
+        "dots-studio/dots-3-note-preview:free",
+        "google/gemma-4-31b-it:free",
+    ]
     BASE_URL = "https://openrouter.ai/api/v1"
 
     def __init__(self):
@@ -18,7 +22,7 @@ class OpenRouterClient:
         response = await self.client.post(
             "/chat/completions",
             json={
-                "model": self.MODEL,
+                "models": self.MODELS,
                 "messages": [{"role": "system", "content": prompt}, {"role": "user", "content": text}],
                 "response_format": {"type": "json_object"},
             },

@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import Analysis from './Analysis'
 import { getStage, openPreQuestionnaire } from './api'
 import Offers from './Offers'
 import PreQuestionnaire from './PreQuestionnaire'
@@ -19,6 +20,7 @@ async function loadStage() {
 export default function App() {
   const [stage, setStage] = useState<string | null>(null)
   const [showOffers, setShowOffers] = useState(SCREEN === 'offers')
+  const [analyzing, setAnalyzing] = useState(false)
 
   useEffect(() => {
     if (tgId) loadStage().then(setStage).catch(() => setStage('START'))
@@ -34,5 +36,6 @@ export default function App() {
   if (showOffers || stage === 'SEND_PRE_QUESTIONNAIRE' || stage === 'BUY_PRODUCT') return <Offers />
   if (stage === 'OPEN_PRE_QUESTIONNAIRE') return <PreQuestionnaire onSent={() => setStage('SEND_PRE_QUESTIONNAIRE')} />
   if (stage !== 'START') return <ReviewChoice onPersonalReview={handlePersonalReview} onSkip={() => setShowOffers(true)} />
-  return <Questionnaire questions={QUESTIONS} url="/first_questions" onDone={() => setStage('GET_RESULT')} />
+  if (analyzing) return <Analysis onReady={setStage} />
+  return <Questionnaire questions={QUESTIONS} url="/first_questions" onDone={() => setAnalyzing(true)} />
 }
