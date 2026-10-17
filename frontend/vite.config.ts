@@ -7,6 +7,7 @@ export default defineConfig({
   server: {
     proxy: {
       '/first_questions': 'http://127.0.0.1:8000',
+      '/payments': 'http://127.0.0.1:8000',
       '/pre_questionnaire': 'http://127.0.0.1:8000',
       '/users': 'http://127.0.0.1:8000',
     },

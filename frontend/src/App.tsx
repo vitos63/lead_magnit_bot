@@ -1,22 +1,24 @@
 import { useEffect, useState } from 'react'
 import { getStage, openPreQuestionnaire } from './api'
+import Offers from './Offers'
 import PreQuestionnaire from './PreQuestionnaire'
 import Questionnaire from './Questionnaire'
 import { QUESTIONS } from './questions'
 import ReviewChoice from './ReviewChoice'
 import { tgId } from './telegram'
 
-const OPENED_FOR_PRE_QUESTIONNAIRE = new URLSearchParams(location.search).get('screen') === 'pre_questionnaire'
+const SCREEN = new URLSearchParams(location.search).get('screen')
 
 async function loadStage() {
   const stage = await getStage()
-  if (stage !== 'GET_RESULT' || !OPENED_FOR_PRE_QUESTIONNAIRE) return stage
+  if (stage !== 'GET_RESULT' || SCREEN !== 'pre_questionnaire') return stage
   openPreQuestionnaire()
   return 'OPEN_PRE_QUESTIONNAIRE'
 }
 
 export default function App() {
   const [stage, setStage] = useState<string | null>(null)
+  const [showOffers, setShowOffers] = useState(SCREEN === 'offers')
 
   useEffect(() => {
     if (tgId) loadStage().then(setStage).catch(() => setStage('START'))
@@ -29,8 +31,8 @@ export default function App() {
 
   if (!tgId) return <p>Откройте форму из Telegram-бота</p>
   if (stage === null) return <p>Загрузка…</p>
-  if (stage === 'SEND_PRE_QUESTIONNAIRE') return <p>Заявка на разбор отправлена!</p>
+  if (showOffers || stage === 'SEND_PRE_QUESTIONNAIRE' || stage === 'BUY_PRODUCT') return <Offers />
   if (stage === 'OPEN_PRE_QUESTIONNAIRE') return <PreQuestionnaire onSent={() => setStage('SEND_PRE_QUESTIONNAIRE')} />
-  if (stage !== 'START') return <ReviewChoice onPersonalReview={handlePersonalReview} />
+  if (stage !== 'START') return <ReviewChoice onPersonalReview={handlePersonalReview} onSkip={() => setShowOffers(true)} />
   return <Questionnaire questions={QUESTIONS} url="/first_questions" onDone={() => setStage('GET_RESULT')} />
 }

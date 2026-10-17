@@ -8,8 +8,12 @@ class Settings(BaseSettings):
 
     DATABASE_URL: str
     BOT_TOKEN: str
+    BOT_USERNAME: str
     WEBAPP_URL: str
     OPENROUTER_API_KEY: str
+    YOOKASSA_SHOP_ID: str
+    YOOKASSA_SECRET_KEY: str
+    RECEIPT_EMAIL: str
 
 
 settings = Settings()

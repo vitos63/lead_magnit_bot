@@ -1,8 +1,9 @@
-import { useState } from 'react'
+type Props = {
+  onPersonalReview: () => void
+  onSkip: () => void
+}
 
-export default function ReviewChoice({ onPersonalReview }: { onPersonalReview: () => void }) {
-  const [notice, setNotice] = useState('')
-
+export default function ReviewChoice({ onPersonalReview, onSkip }: Props) {
   return (
     <main>
       <h1>Спасибо, ответы сохранены!</h1>
@@ -10,9 +11,8 @@ export default function ReviewChoice({ onPersonalReview }: { onPersonalReview: (
         <button className="next" onClick={onPersonalReview}>
           Личный разбор
         </button>
-        <button onClick={() => setNotice('Скоро здесь появится следующий шаг')}>Пропуск разбора</button>
+        <button onClick={onSkip}>Пропуск разбора</button>
       </div>
-      {notice && <p className="step">{notice}</p>}
     </main>
   )
 }

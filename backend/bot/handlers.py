@@ -1,9 +1,9 @@
-from aiogram import F, Router
+from aiogram import Router
 from aiogram.filters import CommandStart
-from aiogram.types import CallbackQuery, Message
+from aiogram.types import Message
 
 from bot.keyboards.questions import QUESTIONS_KEYBOARD
-from bot.keyboards.review import REVIEW_KEYBOARD, SKIP_REVIEW
+from bot.keyboards.review import REVIEW_KEYBOARD
 from database import SessionLocal
 from models import User
 from models.enums import Stage
@@ -20,8 +20,3 @@ async def start(message: Message) -> None:
         )
     keyboard = QUESTIONS_KEYBOARD if user.stage == Stage.START else REVIEW_KEYBOARD
     await message.answer("Привет!", reply_markup=keyboard)
-
-
-@router.callback_query(F.data == SKIP_REVIEW)
-async def skip_review(callback: CallbackQuery) -> None:
-    await callback.answer("Скоро здесь появится следующий шаг")
