@@ -2,8 +2,8 @@ from uuid import uuid4
 
 import httpx
 
+from core.settings import settings
 from schemas.payments import YooKassaPayment
-from settings import settings
 
 
 class YooKassaClient:

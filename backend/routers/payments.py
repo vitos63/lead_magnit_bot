@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from database import get_session
+from core.database import get_session
 from schemas.payments import PRODUCTS, PaymentCreate, PaymentLink, Product, ProductInfo, YooKassaNotification
 from services.payment import PaymentService
 

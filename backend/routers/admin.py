@@ -4,10 +4,10 @@ from aiogram.utils.web_app import safe_parse_webapp_init_data
 from fastapi import APIRouter, Depends, Header, HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from database import get_session
+from core.database import get_session
+from core.settings import settings
 from schemas.admin import AdminUser, AdminUserCard
 from services.admin import AdminService
-from settings import settings
 
 INIT_DATA_TTL = timedelta(days=1)
 

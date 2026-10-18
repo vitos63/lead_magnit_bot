@@ -3,12 +3,12 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from bot import bot
 from bot.texts.admin import format_review_request
 from bot.texts.answers import format_questionnaire
+from core.settings import settings
 from models.enums import Stage
 from repo.pre_questionnaire import PreQuestionnaireRepository
 from repo.user import UserRepository
 from schemas.pre_questionnaire import PRE_QUESTION_TEXTS, PreQuestion, PreQuestionAnswer
-from settings import settings
-from utils import collect_answers
+from utils.answers import collect_answers
 
 
 class PreQuestionnaireService:

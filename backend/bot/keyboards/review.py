@@ -1,6 +1,6 @@
 from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup, WebAppInfo
 
-from settings import settings
+from core.settings import settings
 
 REVIEW_KEYBOARD = InlineKeyboardMarkup(
     inline_keyboard=[

@@ -3,12 +3,12 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from bot import bot
 from bot.texts.admin import format_purchase
 from clients.yookassa import yookassa
+from core.settings import settings
 from models import Payment
 from models.enums import Stage
 from repo.payment import PaymentRepository
 from repo.user import UserRepository
 from schemas.payments import PRODUCTS, PaymentCreate, Product
-from settings import settings
 
 
 class PaymentService:

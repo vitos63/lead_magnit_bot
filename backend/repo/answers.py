@@ -3,7 +3,7 @@ from collections.abc import Iterable
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from models import Base
-from utils import extract_answers
+from utils.answers import extract_answers
 
 
 class AnswersRepository:

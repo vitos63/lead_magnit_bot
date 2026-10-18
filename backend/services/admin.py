@@ -5,7 +5,7 @@ from models import User
 from repo.user import UserRepository
 from schemas.admin import AdminUser, AdminUserCard
 from schemas.first_questions import Question, Scores
-from utils import collect_answers, extract_answers
+from utils.answers import collect_answers, extract_answers
 
 
 class AdminService:

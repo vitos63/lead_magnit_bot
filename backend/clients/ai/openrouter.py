@@ -1,6 +1,6 @@
 import httpx
 
-from settings import settings
+from core.settings import settings
 
 
 class OpenRouterClient:

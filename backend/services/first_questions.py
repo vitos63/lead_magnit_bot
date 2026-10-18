@@ -9,7 +9,7 @@ from bot.texts.answers import format_questionnaire
 from bot.texts.result import format_result
 from clients.ai.openrouter import openrouter
 from clients.ai.prompts import RESULT_PROMPT
-from database import SessionLocal
+from core.database import SessionLocal
 from models.enums import Stage
 from repo.first_questions import FirstQuestionsRepository
 from repo.user import UserRepository

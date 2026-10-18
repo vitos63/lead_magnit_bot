@@ -5,11 +5,11 @@ from aiogram.types import Message
 from bot.keyboards.admin import ADMIN_KEYBOARD
 from bot.keyboards.questions import QUESTIONS_KEYBOARD
 from bot.keyboards.review import REVIEW_KEYBOARD
-from database import SessionLocal
+from core.database import SessionLocal
+from core.settings import settings
 from models import User
 from models.enums import Stage
 from services.user import UserService
-from settings import settings
 
 router = Router()
 

@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from database import get_session
+from core.database import get_session
 from schemas.pre_questionnaire import PreQuestion, PreQuestionAnswer
 from services.pre_questionnaire import PreQuestionnaireService
 
