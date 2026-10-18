@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { getAnswers, saveAnswer } from './api'
 import ContactInput from './ContactInput'
-import type { Answer, Question } from './questions'
+import { type Answer, BOOL_LABELS, type Question } from './questions'
 import Toggle from './Toggle'
 
 type Props = {
@@ -28,7 +28,7 @@ export default function Questionnaire({ questions, url, onDone }: Props) {
 
   if (!answers) return <p>Загрузка…</p>
 
-  const { name, text, type, labels = ['Да', 'Нет'] } = questions[index]
+  const { name, text, type, labels = BOOL_LABELS } = questions[index]
   const answer = answers[name]
   const setAnswer = (value: Answer) => setAnswers((prev) => ({ ...prev, [name]: value }))
   const isLast = index === questions.length - 1

@@ -30,12 +30,15 @@ LEAK_TEXTS = {
 }
 
 
+def format_scores(scores: Scores) -> str:
+    return "; ".join(f"{DIRECTIONS[name]} — {score}/10" for name, score in scores.model_dump().items())
+
+
 def format_result(scores: Scores) -> str:
     values = scores.model_dump()
     leak = min(values, key=values.get)
-    scores_line = "; ".join(f"{DIRECTIONS[name]} — {score}/10" for name, score in values.items())
     return (
-        f"Оценки: {scores_line}\n"
+        f"Оценки: {format_scores(scores)}\n"
         f"ГЛАВНАЯ УТЕЧКА — {DIRECTIONS[leak].upper()} · {values[leak]}/10\n"
         f"{LEAK_TEXTS[leak]}"
     )

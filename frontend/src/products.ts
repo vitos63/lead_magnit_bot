@@ -2,6 +2,8 @@ export type ProductId = 'master_group' | 'generator'
 
 export type Section = { title?: string; text?: string; items?: string[] }
 
+export const rub = (value: number) => `${value.toLocaleString('ru-RU')} ₽`
+
 type Product = {
   card: { title: string; text: string; bonus?: string; button: string }
   label?: string

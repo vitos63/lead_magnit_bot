@@ -5,7 +5,7 @@ import uvicorn
 from fastapi import FastAPI
 
 from bot import bot, dp
-from routers import first_questions, payments, pre_questionnaire, users
+from routers import admin, first_questions, payments, pre_questionnaire, users
 
 
 @asynccontextmanager
@@ -17,6 +17,7 @@ async def lifespan(app: FastAPI):
 
 
 app = FastAPI(lifespan=lifespan)
+app.include_router(admin.router)
 app.include_router(first_questions.router)
 app.include_router(payments.router)
 app.include_router(pre_questionnaire.router)

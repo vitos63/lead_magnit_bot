@@ -8,6 +8,7 @@ from repo.pre_questionnaire import PreQuestionnaireRepository
 from repo.user import UserRepository
 from schemas.pre_questionnaire import PRE_QUESTION_TEXTS, PreQuestion, PreQuestionAnswer
 from settings import settings
+from utils import collect_answers
 
 
 class PreQuestionnaireService:
@@ -25,11 +26,8 @@ class PreQuestionnaireService:
             await self.repository.set_answer(item.tg_id, item.question, item.answer)
 
     async def get_answers(self, tg_id: int) -> dict[str, bool | str]:
-        answers = await self.repository.get_answers(tg_id, PreQuestion)
         user = await self.user_repository.get(tg_id)
-        if user.contact:
-            answers[PreQuestion.CONTACT] = user.contact
-        return answers
+        return collect_answers(await self.repository.get(tg_id), user.contact)
 
     async def send(self, tg_id: int) -> None:
         await self.user_repository.give_consent(tg_id)

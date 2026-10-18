@@ -229,6 +229,44 @@ input[type='text']:focus {
   cursor: default;
 }
 
+.filters {
+  gap: 0;
+  padding: 6px;
+}
+
+.filters button {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 10px;
+  border: none;
+  border-radius: 9px;
+  background: none;
+  color: var(--text-secondary);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.filters .selected {
+  background: var(--accent);
+  color: var(--on-accent);
+  font-weight: 500;
+}
+
+.user {
+  gap: 2px;
+  border: none;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.answer {
+  white-space: pre-line;
+}
+
 .error {
   color: var(--error);
 }

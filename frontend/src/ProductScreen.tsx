@@ -1,9 +1,7 @@
 import { useEffect, useState } from 'react'
 import { createPayment, type ProductPrice } from './api'
-import { PRODUCTS, type ProductId, type Section } from './products'
+import { PRODUCTS, type ProductId, rub, type Section } from './products'
 import { openLink } from './telegram'
-
-const rub = (value: number) => `${value.toLocaleString('ru-RU')} ₽`
 
 type Props = {
   id: ProductId

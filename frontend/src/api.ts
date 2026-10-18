@@ -1,12 +1,34 @@
 import type { ProductId } from './products'
 import type { Answer } from './questions'
-import { tgId } from './telegram'
+import { initData, tgId } from './telegram'
 
 export type ProductPrice = { title: string; price: number; old_price: number }
 
+export type AdminPayment = { product: ProductId; amount: number; status: string; created_at: string }
+
+export type AdminUser = {
+  tg_id: number
+  username: string | null
+  start_date: string
+  stage: string
+  skipped_review: boolean
+  first_answers_count: number
+  pre_answers_count: number
+  payments: AdminPayment[]
+}
+
+export type AdminUserCard = AdminUser & {
+  contact: string | null
+  scores: string | null
+  first_answers: Record<string, Answer>
+  pre_answers: Record<string, Answer>
+}
+
 async function request(url: string, body?: object) {
-  const init = body && { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) }
-  const response = await fetch(url, init)
+  const response = await fetch(url, {
+    headers: { 'Content-Type': 'application/json', 'X-Init-Data': initData },
+    ...(body && { method: 'POST', body: JSON.stringify(body) }),
+  })
   if (!response.ok) throw new Error(`HTTP ${response.status}`)
   return response
 }
@@ -34,6 +56,10 @@ export async function openPreQuestionnaire() {
   await request(`/pre_questionnaire/${tgId}/open`, {})
 }
 
+export async function skipReview() {
+  await request(`/users/${tgId}/skip_review`, {})
+}
+
 export async function sendPreQuestionnaire() {
   await request(`/pre_questionnaire/${tgId}/send`, {})
 }
@@ -46,4 +72,14 @@ export async function getProducts(): Promise<Record<ProductId, ProductPrice>> {
 export async function createPayment(product: ProductId): Promise<string> {
   const response = await request('/payments', { tg_id: tgId, product })
   return (await response.json()).url
+}
+
+export async function getAdminUsers(): Promise<AdminUser[]> {
+  const response = await request('/admin/users')
+  return response.json()
+}
+
+export async function getAdminUser(id: number): Promise<AdminUserCard> {
+  const response = await request(`/admin/users/${id}`)
+  return response.json()
 }
