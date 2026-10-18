@@ -5,6 +5,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from bot import bot
 from bot.keyboards.review import REVIEW_KEYBOARD
+from bot.texts.answers import format_questionnaire
 from bot.texts.result import format_result
 from clients.ai.openrouter import openrouter
 from clients.ai.prompts import RESULT_PROMPT
@@ -26,11 +27,7 @@ class FirstQuestionsService:
         return await self.repository.get_answers(tg_id, Question)
 
     async def format_answers(self, tg_id: int) -> str:
-        answers = await self.get_answers(tg_id)
-        return "\n\n".join(
-            f"{number}. {text}\nОтвет: {self.format_answer(answers.get(question))}"
-            for number, (question, text) in enumerate(QUESTION_TEXTS.items(), 1)
-        )
+        return format_questionnaire(QUESTION_TEXTS, await self.get_answers(tg_id))
 
     async def get_result(self, tg_id: int) -> str | None:
         questions = await self.repository.get(tg_id)
@@ -54,9 +51,3 @@ class FirstQuestionsService:
         if message_id:
             with suppress(TelegramBadRequest):
                 await bot.edit_message_reply_markup(chat_id=tg_id, message_id=message_id)
-
-    @staticmethod
-    def format_answer(answer: bool | str) -> str:
-        if isinstance(answer, bool):
-            return "Да" if answer else "Нет"
-        return answer

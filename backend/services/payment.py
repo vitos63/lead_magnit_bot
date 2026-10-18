@@ -1,6 +1,7 @@
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from bot import bot
+from bot.texts.admin import format_purchase
 from clients.yookassa import yookassa
 from models import Payment
 from models.enums import Stage
@@ -33,4 +34,7 @@ class PaymentService:
         await self.repository.set_status(payment_id, payment.status)
         if payment.status == "succeeded":
             await self.user_repository.advance_stage(saved.tg_id, Stage.BUY_PRODUCT)
-            await bot.send_message(saved.tg_id, f"Оплата прошла! {PRODUCTS[Product(saved.product)].title} — доступ скоро появится здесь.")
+            title = PRODUCTS[Product(saved.product)].title
+            await bot.send_message(saved.tg_id, f"Оплата прошла! {title} — доступ скоро появится здесь.")
+            user = await self.user_repository.get(saved.tg_id)
+            await bot.send_message(settings.ADMIN_TG_ID, format_purchase(user, title, saved.amount))
