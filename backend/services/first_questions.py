@@ -12,7 +12,7 @@ from database import SessionLocal
 from models.enums import Stage
 from repo.first_questions import FirstQuestionsRepository
 from repo.user import UserRepository
-from schemas.first_questions import QUESTION_TEXTS, QuestionAnswer, Scores
+from schemas.first_questions import QUESTION_TEXTS, Question, QuestionAnswer, Scores
 
 
 class FirstQuestionsService:
@@ -22,10 +22,13 @@ class FirstQuestionsService:
     async def save_answer(self, item: QuestionAnswer) -> None:
         await self.repository.set_answer(item.tg_id, item.question, item.answer)
 
-    async def get_answers(self, tg_id: int) -> str:
-        questions = await self.repository.get(tg_id)
+    async def get_answers(self, tg_id: int) -> dict[str, bool | str]:
+        return await self.repository.get_answers(tg_id, Question)
+
+    async def format_answers(self, tg_id: int) -> str:
+        answers = await self.get_answers(tg_id)
         return "\n\n".join(
-            f"{number}. {text}\nОтвет: {self.format_answer(getattr(questions, question.value))}"
+            f"{number}. {text}\nОтвет: {self.format_answer(answers.get(question))}"
             for number, (question, text) in enumerate(QUESTION_TEXTS.items(), 1)
         )
 

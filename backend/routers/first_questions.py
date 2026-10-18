@@ -2,7 +2,7 @@ from fastapi import APIRouter, BackgroundTasks, Depends, HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from database import get_session
-from schemas.first_questions import LAST_QUESTION, QuestionAnswer, ResultText
+from schemas.first_questions import LAST_QUESTION, Question, QuestionAnswer, ResultText
 from services.first_questions import FirstQuestionsService
 
 router = APIRouter(prefix="/first_questions")
@@ -15,9 +15,14 @@ async def receive_answer(
     service = FirstQuestionsService(session)
     await service.save_answer(item)
     if item.question == LAST_QUESTION:
-        answers = await service.get_answers(item.tg_id)
+        answers = await service.format_answers(item.tg_id)
         background_tasks.add_task(service.send_result, item.tg_id, answers)
     return item
+
+
+@router.get("/{tg_id}")
+async def get_answers(tg_id: int, session: AsyncSession = Depends(get_session)) -> dict[Question, bool | str]:
+    return await FirstQuestionsService(session).get_answers(tg_id)
 
 
 @router.get("/{tg_id}/result")

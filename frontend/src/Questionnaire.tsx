@@ -1,5 +1,5 @@
-import { useState } from 'react'
-import { saveAnswer } from './api'
+import { useEffect, useState } from 'react'
+import { getAnswers, saveAnswer } from './api'
 import ContactInput from './ContactInput'
 import type { Answer, Question } from './questions'
 import Toggle from './Toggle'
@@ -12,9 +12,21 @@ type Props = {
 
 export default function Questionnaire({ questions, url, onDone }: Props) {
   const [index, setIndex] = useState(0)
-  const [answers, setAnswers] = useState<Record<string, Answer>>({})
+  const [answers, setAnswers] = useState<Record<string, Answer> | null>(null)
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState('')
+
+  useEffect(() => {
+    getAnswers(url)
+      .catch(() => ({}))
+      .then((saved) => {
+        const unanswered = questions.findIndex((question) => !(question.name in saved))
+        setIndex(unanswered === -1 ? questions.length - 1 : unanswered)
+        setAnswers(saved)
+      })
+  }, [questions, url])
+
+  if (!answers) return <p>Загрузка…</p>
 
   const { name, text, type, labels = ['Да', 'Нет'] } = questions[index]
   const answer = answers[name]

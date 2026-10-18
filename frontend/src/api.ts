@@ -15,6 +15,11 @@ export async function saveAnswer(url: string, question: string, answer: Answer) 
   await request(url, { tg_id: tgId, question, answer })
 }
 
+export async function getAnswers(url: string): Promise<Record<string, Answer>> {
+  const response = await request(`${url}/${tgId}`)
+  return response.json()
+}
+
 export async function getStage(): Promise<string> {
   const response = await request(`/users/${tgId}`)
   return (await response.json()).stage
