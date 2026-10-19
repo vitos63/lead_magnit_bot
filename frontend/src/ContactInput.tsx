@@ -30,7 +30,6 @@ export default function ContactInput({ value, onChange }: Props) {
   return (
     <>
       <Toggle
-        name="contact"
         options={OPTIONS}
         value={choice}
         onChange={(option) => onChange(option === 'telegram' ? TELEGRAM_CONTACT : '')}

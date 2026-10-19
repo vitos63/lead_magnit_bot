@@ -6,14 +6,14 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from bot import bot
 from bot.keyboards.review import REVIEW_KEYBOARD
 from bot.texts.answers import format_questionnaire
-from bot.texts.result import format_result
+from bot.texts.result import build_result, format_result
 from clients.ai.openrouter import openrouter
 from clients.ai.prompts import RESULT_PROMPT
 from core.database import SessionLocal
 from models.enums import Stage
 from repo.first_questions import FirstQuestionsRepository
 from repo.user import UserRepository
-from schemas.first_questions import QUESTION_TEXTS, Question, QuestionAnswer, Scores
+from schemas.first_questions import QUESTION_TEXTS, Question, QuestionAnswer, Result, Scores
 
 
 class FirstQuestionsService:
@@ -29,10 +29,10 @@ class FirstQuestionsService:
     async def format_answers(self, tg_id: int) -> str:
         return format_questionnaire(QUESTION_TEXTS, await self.get_answers(tg_id))
 
-    async def get_result(self, tg_id: int) -> str | None:
+    async def get_result(self, tg_id: int) -> Result | None:
         questions = await self.repository.get(tg_id)
         if questions and questions.scores:
-            return format_result(Scores.model_validate(questions.scores))
+            return build_result(Scores.model_validate(questions.scores))
         return None
 
     @staticmethod

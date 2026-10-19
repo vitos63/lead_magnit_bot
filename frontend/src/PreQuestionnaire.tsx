@@ -26,16 +26,16 @@ export default function PreQuestionnaire({ onSent }: { onSent: () => void }) {
 
   return (
     <main>
-      <label className="consent">
-        <input type="checkbox" checked={consent} onChange={(e) => setConsent(e.target.checked)} />
-        Я согласен(на) на обработку предоставленных данных для рассмотрения моей заявки и на связь со мной по поводу
-        личного разбора.
-      </label>
-      <div className="nav">
-        <button className="next" disabled={!consent || sending} onClick={handleSend}>
+      <section className="card">
+        <label className="consent">
+          <input type="checkbox" checked={consent} onChange={(e) => setConsent(e.target.checked)} />
+          Я согласен(на) на обработку предоставленных данных для рассмотрения моей заявки и на связь со мной по поводу
+          личного разбора.
+        </label>
+        <button className="big" disabled={!consent || sending} onClick={handleSend}>
           Отправить заявку на разбор →
         </button>
-      </div>
+      </section>
       {error && <p className="error">Не отправилось: {error}</p>}
     </main>
   )

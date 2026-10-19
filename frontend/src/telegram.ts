@@ -9,6 +9,8 @@ declare global {
         close: () => void
         expand: () => void
         disableVerticalSwipes: () => void
+        setHeaderColor: (color: string) => void
+        setBackgroundColor: (color: string) => void
       }
     }
   }
@@ -19,6 +21,8 @@ const user = webApp?.initDataUnsafe.user
 
 webApp?.expand()
 webApp?.disableVerticalSwipes()
+webApp?.setHeaderColor('#000000')
+webApp?.setBackgroundColor('#000000')
 
 export const tgId = user?.id
 export const tgUsername = user?.username
