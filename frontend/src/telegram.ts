@@ -7,6 +7,8 @@ declare global {
         openLink: (url: string) => void
         openTelegramLink: (url: string) => void
         close: () => void
+        expand: () => void
+        disableVerticalSwipes: () => void
       }
     }
   }
@@ -14,6 +16,9 @@ declare global {
 
 const webApp = window.Telegram?.WebApp
 const user = webApp?.initDataUnsafe.user
+
+webApp?.expand()
+webApp?.disableVerticalSwipes()
 
 export const tgId = user?.id
 export const tgUsername = user?.username
