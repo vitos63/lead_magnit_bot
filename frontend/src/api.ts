@@ -2,7 +2,9 @@ import type { ProductId } from './products'
 import type { Answer } from './questions'
 import { initData, tgId } from './telegram'
 
-export type ProductPrice = { title: string; price: number; old_price: number }
+export const POLL_INTERVAL = 3000
+
+export type ProductPrice ={ title: string; price: number; old_price: number }
 
 export type AdminPayment = { product: ProductId; amount: number; status: string; created_at: string }
 
@@ -69,9 +71,14 @@ export async function getProducts(): Promise<Record<ProductId, ProductPrice>> {
   return response.json()
 }
 
-export async function createPayment(product: ProductId): Promise<string> {
+export async function createPayment(product: ProductId): Promise<{ id: string; url: string }> {
   const response = await request('/payments', { tg_id: tgId, product })
-  return (await response.json()).url
+  return response.json()
+}
+
+export async function getPaymentStatus(id: string): Promise<string> {
+  const response = await request(`/payments/${id}`)
+  return (await response.json()).status
 }
 
 export async function getAdminUsers(): Promise<AdminUser[]> {

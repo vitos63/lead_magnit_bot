@@ -1,3 +1,4 @@
+from sqlalchemy import update
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from models import Payment
@@ -14,7 +15,9 @@ class PaymentRepository:
         self.session.add(payment)
         await self.session.commit()
 
-    async def set_status(self, payment_id: str, status: str) -> None:
-        payment = await self.get(payment_id)
-        payment.status = status
+    async def set_status(self, payment_id: str, status: str) -> bool:
+        result = await self.session.execute(
+            update(Payment).where(Payment.id == payment_id, Payment.status != status).values(status=status)
+        )
         await self.session.commit()
+        return bool(result.rowcount)

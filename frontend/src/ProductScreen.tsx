@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
-import { createPayment, type ProductPrice } from './api'
+import { createPayment, getPaymentStatus, POLL_INTERVAL, type ProductPrice } from './api'
 import { PRODUCTS, type ProductId, rub, type Section } from './products'
-import { openLink } from './telegram'
+import { closeApp, openLink } from './telegram'
 
 type Props = {
   id: ProductId
@@ -13,22 +13,49 @@ export default function ProductScreen({ id, price, onBack }: Props) {
   const product = PRODUCTS[id]
   const [paying, setPaying] = useState(false)
   const [error, setError] = useState('')
+  const [paymentId, setPaymentId] = useState<string>()
+  const [status, setStatus] = useState('')
 
   useEffect(() => {
     window.scrollTo(0, 0)
   }, [])
 
+  useEffect(() => {
+    if (!paymentId) return
+    const timer = setInterval(async () => {
+      const current = await getPaymentStatus(paymentId).catch(() => 'pending')
+      setStatus(current)
+      if (current !== 'pending') clearInterval(timer)
+    }, POLL_INTERVAL)
+    return () => clearInterval(timer)
+  }, [paymentId])
+
   async function handleBuy() {
     setPaying(true)
     setError('')
     try {
-      openLink(await createPayment(id))
+      const payment = await createPayment(id)
+      openLink(payment.url)
+      setPaymentId(payment.id)
+      setStatus('pending')
     } catch (e) {
       setError((e as Error).message)
     } finally {
       setPaying(false)
     }
   }
+
+  if (status === 'succeeded')
+    return (
+      <main className="centered">
+        <h1>Оплата прошла!</h1>
+        <p>{product.title}</p>
+        <p className="muted">Доступ скоро появится в чате с ботом.</p>
+        <button className="big" onClick={closeApp}>
+          Вернуться в бота
+        </button>
+      </main>
+    )
 
   return (
     <main>
@@ -57,6 +84,8 @@ export default function ProductScreen({ id, price, onBack }: Props) {
       <button className="big" disabled={!price || paying} onClick={handleBuy}>
         {product.button(price ? rub(price.price) : '…')}
       </button>
+      {status === 'pending' && <p className="muted">Ждём подтверждения оплаты…</p>}
+      {status === 'canceled' && <p className="error">Оплата не прошла, попробуйте ещё раз</p>}
       {error && <p className="error">Не получилось открыть оплату: {error}</p>}
     </main>
   )

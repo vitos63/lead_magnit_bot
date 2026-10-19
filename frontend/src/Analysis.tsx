@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react'
-import { getStage } from './api'
+import { getStage, POLL_INTERVAL } from './api'
 
-const POLL_INTERVAL = 3000
 const TIMEOUT = 180000
 
 export default function Analysis({ onReady }: { onReady: (stage: string) => void }) {
@@ -28,7 +27,7 @@ export default function Analysis({ onReady }: { onReady: (stage: string) => void
     )
 
   return (
-    <main className="analysis">
+    <main className="centered">
       <div className="spinner" />
       <h1>AI анализирует ваши ответы</h1>
       <p className="muted">Сопоставляем продукт, оффер, трафик и Telegram.</p>

@@ -26,7 +26,12 @@ class PaymentCreate(BaseModel):
 
 
 class PaymentLink(BaseModel):
+    id: str
     url: str
+
+
+class PaymentStatus(BaseModel):
+    status: str
 
 
 class YooKassaConfirmation(BaseModel):

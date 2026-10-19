@@ -6,6 +6,7 @@ declare global {
         initDataUnsafe: { user?: { id: number; username?: string } }
         openLink: (url: string) => void
         openTelegramLink: (url: string) => void
+        close: () => void
       }
     }
   }
@@ -19,3 +20,4 @@ export const tgUsername = user?.username
 export const initData = webApp?.initData ?? ''
 export const openLink = (url: string) => webApp?.openLink(url)
 export const openTelegramLink = (url: string) => webApp?.openTelegramLink(url)
+export const closeApp = () => webApp?.close()

@@ -271,7 +271,7 @@ input[type='text']:focus {
   color: var(--error);
 }
 
-.analysis {
+.centered {
   justify-content: center;
   align-items: center;
   text-align: center;
