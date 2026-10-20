@@ -40,10 +40,10 @@ export default function ReviewChoice({ onPersonalReview, onSkip }: Props) {
         </section>
       )}
       <button className="big" onClick={onPersonalReview}>
-        Личный разбор
+        Хочу личный разбор →
       </button>
       <button className="big secondary" onClick={onSkip}>
-        Пропуск разбора
+        Знаю проблему. Хочу решение →
       </button>
     </main>
   )
