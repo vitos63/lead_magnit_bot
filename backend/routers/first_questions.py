@@ -2,7 +2,7 @@ from fastapi import APIRouter, BackgroundTasks, Depends, HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from core.database import get_session
-from schemas.first_questions import LAST_QUESTION, Question, QuestionAnswer, ResultText
+from schemas.first_questions import LAST_QUESTION, Question, QuestionAnswer, Result
 from services.first_questions import FirstQuestionsService
 
 router = APIRouter(prefix="/first_questions")
@@ -26,8 +26,8 @@ async def get_answers(tg_id: int, session: AsyncSession = Depends(get_session)) 
 
 
 @router.get("/{tg_id}/result")
-async def get_result(tg_id: int, session: AsyncSession = Depends(get_session)) -> ResultText:
-    text = await FirstQuestionsService(session).get_result(tg_id)
-    if not text:
+async def get_result(tg_id: int, session: AsyncSession = Depends(get_session)) -> Result:
+    result = await FirstQuestionsService(session).get_result(tg_id)
+    if not result:
         raise HTTPException(status_code=404)
-    return ResultText(text=text)
+    return result

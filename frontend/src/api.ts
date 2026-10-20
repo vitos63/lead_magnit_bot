@@ -6,6 +6,8 @@ export const POLL_INTERVAL = 3000
 
 export type ProductPrice ={ title: string; price: number; old_price: number }
 
+export type Result = { directions: { title: string; score: number }[]; leak: string; text: string }
+
 export type AdminPayment = { product: ProductId; amount: number; status: string; created_at: string }
 
 export type AdminUser = {
@@ -49,9 +51,9 @@ export async function getStage(): Promise<string> {
   return (await response.json()).stage
 }
 
-export async function getResult(): Promise<string> {
+export async function getResult(): Promise<Result> {
   const response = await request(`/first_questions/${tgId}/result`)
-  return (await response.json()).text
+  return response.json()
 }
 
 export async function openPreQuestionnaire() {

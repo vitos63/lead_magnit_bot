@@ -1,4 +1,4 @@
-from schemas.first_questions import Scores
+from schemas.first_questions import Direction, Result, Scores
 
 DIRECTIONS = {
     "product": "Продукт",
@@ -30,13 +30,27 @@ LEAK_TEXTS = {
 }
 
 
+def find_leak(values: dict[str, int]) -> str:
+    return min(values, key=values.get)
+
+
 def format_scores(scores: Scores) -> str:
     return "; ".join(f"{DIRECTIONS[name]} — {score}/10" for name, score in scores.model_dump().items())
 
 
+def build_result(scores: Scores) -> Result:
+    values = scores.model_dump()
+    leak = find_leak(values)
+    return Result(
+        directions=[Direction(title=DIRECTIONS[name], score=score) for name, score in values.items()],
+        leak=DIRECTIONS[leak],
+        text=LEAK_TEXTS[leak],
+    )
+
+
 def format_result(scores: Scores) -> str:
     values = scores.model_dump()
-    leak = min(values, key=values.get)
+    leak = find_leak(values)
     return (
         f"Оценки: {format_scores(scores)}\n"
         f"ГЛАВНАЯ УТЕЧКА — {DIRECTIONS[leak].upper()} · {values[leak]}/10\n"

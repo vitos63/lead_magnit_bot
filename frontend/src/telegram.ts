@@ -7,6 +7,10 @@ declare global {
         openLink: (url: string) => void
         openTelegramLink: (url: string) => void
         close: () => void
+        expand: () => void
+        disableVerticalSwipes: () => void
+        setHeaderColor: (color: string) => void
+        setBackgroundColor: (color: string) => void
       }
     }
   }
@@ -14,6 +18,11 @@ declare global {
 
 const webApp = window.Telegram?.WebApp
 const user = webApp?.initDataUnsafe.user
+
+webApp?.expand()
+webApp?.disableVerticalSwipes()
+webApp?.setHeaderColor('#f6f3ed')
+webApp?.setBackgroundColor('#f6f3ed')
 
 export const tgId = user?.id
 export const tgUsername = user?.username

@@ -1,4 +1,6 @@
-from sqlalchemy import update
+from collections.abc import Sequence
+
+from sqlalchemy import select, update
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from models import Payment
@@ -10,6 +12,14 @@ class PaymentRepository:
 
     async def get(self, payment_id: str) -> Payment | None:
         return await self.session.get(Payment, payment_id)
+
+    async def get_paid_products(self, tg_id: int) -> Sequence[str]:
+        query = (
+            select(Payment.product)
+            .where(Payment.tg_id == tg_id, Payment.status == "succeeded")
+            .order_by(Payment.created_at)
+        )
+        return (await self.session.scalars(query)).all()
 
     async def add(self, payment: Payment) -> None:
         self.session.add(payment)

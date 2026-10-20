@@ -1,15 +1,21 @@
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from models import User
+from repo.payment import PaymentRepository
 from repo.user import UserRepository
+from schemas.payments import PRODUCTS, Product
 
 
 class UserService:
     def __init__(self, session: AsyncSession):
         self.repository = UserRepository(session)
+        self.payment_repository = PaymentRepository(session)
 
     async def get(self, tg_id: int) -> User | None:
         return await self.repository.get(tg_id)
+
+    async def get_paid_titles(self, tg_id: int) -> list[str]:
+        return [PRODUCTS[Product(product)].title for product in await self.payment_repository.get_paid_products(tg_id)]
 
     async def set_start_message_id(self, tg_id: int, message_id: int) -> None:
         await self.repository.set_start_message_id(tg_id, message_id)

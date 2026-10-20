@@ -65,5 +65,12 @@ class Scores(BaseModel):
     telegram: int
 
 
-class ResultText(BaseModel):
+class Direction(BaseModel):
+    title: str
+    score: int
+
+
+class Result(BaseModel):
+    directions: list[Direction]
+    leak: str
     text: str
