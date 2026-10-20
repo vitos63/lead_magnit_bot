@@ -5,13 +5,24 @@ export type Question = {
   text: string
   type: 'bool' | 'text' | 'contact'
   labels?: [string, string]
+  placeholder?: string
 }
 
 export const BOOL_LABELS: [string, string] = ['Да', 'Нет']
 
 export const PRE_QUESTIONS: Question[] = [
-  { name: 'what_result_you_want_to_get', text: 'Какой результат вы хотите получить в ближайшие 2–3 месяца?', type: 'text' },
-  { name: 'what_mostly_hinder', text: 'Что сейчас больше всего мешает вам увеличить количество заявок?', type: 'text' },
+  {
+    name: 'what_result_you_want_to_get',
+    text: 'Какой результат вы хотите получить в ближайшие 2–3 месяца?',
+    type: 'text',
+    placeholder: 'Например: увеличить количество заявок, выйти на новый уровень дохода…',
+  },
+  {
+    name: 'what_mostly_hinder',
+    text: 'Что сейчас больше всего мешает вам увеличить количество заявок?',
+    type: 'text',
+    placeholder: 'Расскажите, что уже пробовали и с чем возникают сложности…',
+  },
   {
     name: 'are_you_ready',
     text: 'Готовы ли вы внедрять изменения в ближайший месяц?',

@@ -6,7 +6,7 @@ import PreQuestionnaire from './PreQuestionnaire'
 import Questionnaire from './Questionnaire'
 import { QUESTIONS } from './questions'
 import RequestSent from './RequestSent'
-import ReviewChoice from './ReviewChoice'
+import Result from './Result'
 import { tgId } from './telegram'
 
 const SCREEN = new URLSearchParams(location.search).get('screen')
@@ -36,7 +36,7 @@ export default function App() {
   if (stage === null) return <p>Загрузка…</p>
   if (stage === 'SEND_PRE_QUESTIONNAIRE') return <RequestSent />
   if (stage === 'OPEN_PRE_QUESTIONNAIRE') return <PreQuestionnaire onSent={() => setStage('SEND_PRE_QUESTIONNAIRE')} />
-  if (stage !== 'START') return <ReviewChoice onPersonalReview={handlePersonalReview} />
+  if (stage !== 'START') return <Result onPersonalReview={handlePersonalReview} />
   if (analyzing) return <Analysis onReady={setStage} />
   return <Questionnaire questions={QUESTIONS} url="/first_questions" onDone={() => setAnalyzing(true)} />
 }

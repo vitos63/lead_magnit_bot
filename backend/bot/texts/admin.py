@@ -7,4 +7,4 @@ def format_user(user: User) -> str:
 
 
 def format_review_request(user: User, answers: str) -> str:
-    return f"Новая заявка на личный разбор\nПользователь: {format_user(user)}\n\n{answers}"
+    return f"Новая заявка на персональный разбор\nПользователь: {format_user(user)}\n\n{answers}"

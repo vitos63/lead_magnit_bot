@@ -3,7 +3,12 @@ import { initData, tgId } from './telegram'
 
 export const POLL_INTERVAL = 3000
 
-export type Result = { directions: { title: string; score: number }[]; leak: string; text: string }
+export type DiagnosticResult = {
+  directions: { title: string; score: number }[]
+  leak: string
+  text: string
+  diagnosis: { title: string; paragraphs: string[]; recommendation: string }
+}
 
 export type AdminUser = {
   tg_id: number
@@ -44,7 +49,7 @@ export async function getStage(): Promise<string> {
   return (await response.json()).stage
 }
 
-export async function getResult(): Promise<Result> {
+export async function getResult(): Promise<DiagnosticResult> {
   const response = await request(`/first_questions/${tgId}/result`)
   return response.json()
 }

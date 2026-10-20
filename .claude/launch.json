@@ -6,6 +6,19 @@
       "runtimeExecutable": "npm",
       "runtimeArgs": ["--prefix", "frontend", "run", "dev"],
       "port": 5173
+    },
+    {
+      "name": "backend-test",
+      "runtimeExecutable": "C:\\Users\\vitya\\AppData\\Local\\Temp\\claude\\C--Users-vitya-Desktop-lead-magnit-bot\\45947d40-c13c-425b-9107-23fea68c9021\\scratchpad\\venv\\Scripts\\python.exe",
+      "runtimeArgs": ["-m", "uvicorn", "--app-dir", "backend", "main:app", "--port", "8000"],
+      "env": {
+        "DATABASE_URL": "postgresql+asyncpg://postgres@localhost:55432/lead_test",
+        "BOT_TOKEN": "123456:TEST",
+        "ADMIN_TG_ID": "1",
+        "WEBAPP_URL": "https://example.test",
+        "OPENROUTER_API_KEY": "test"
+      },
+      "port": 8000
     }
   ]
 }

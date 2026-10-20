@@ -75,6 +75,25 @@ p {
   margin: 0;
 }
 
+ul {
+  margin: 0;
+  padding-left: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.checks {
+  padding: 0;
+  list-style: none;
+}
+
+.checks li::before {
+  content: '✓ ';
+  color: var(--accent);
+  font-weight: 700;
+}
+
 .muted {
   color: var(--text-secondary);
 }
@@ -95,8 +114,17 @@ p {
   box-shadow: 0 1px 3px rgb(25 33 47 / 0.05);
 }
 
-.result {
-  white-space: pre-line;
+.card.leak {
+  border-left: 4px solid var(--danger);
+}
+
+.card.leak .label {
+  color: var(--danger);
+}
+
+.note {
+  font-size: 14px;
+  text-align: center;
 }
 
 button {

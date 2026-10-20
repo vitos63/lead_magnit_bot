@@ -70,7 +70,14 @@ class Direction(BaseModel):
     score: int
 
 
+class Diagnosis(BaseModel):
+    title: str
+    paragraphs: list[str]
+    recommendation: str
+
+
 class Result(BaseModel):
     directions: list[Direction]
     leak: str
     text: str
+    diagnosis: Diagnosis

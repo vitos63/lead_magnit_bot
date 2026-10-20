@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { type ReactNode, useEffect, useState } from 'react'
 import { getAnswers, saveAnswer } from './api'
 import ContactInput from './ContactInput'
 import { type Answer, BOOL_LABELS, type Question } from './questions'
@@ -7,10 +7,22 @@ import Toggle from './Toggle'
 type Props = {
   questions: Question[]
   url: string
-  onDone: () => void
+  intro?: ReactNode
+  children?: ReactNode
+  doneLabel?: string
+  canFinish?: boolean
+  onDone: () => void | Promise<void>
 }
 
-export default function Questionnaire({ questions, url, onDone }: Props) {
+export default function Questionnaire({
+  questions,
+  url,
+  intro,
+  children,
+  doneLabel = 'Продолжить →',
+  canFinish = true,
+  onDone,
+}: Props) {
   const [index, setIndex] = useState(0)
   const [answers, setAnswers] = useState<Record<string, Answer> | null>(null)
   const [saving, setSaving] = useState(false)
@@ -28,8 +40,9 @@ export default function Questionnaire({ questions, url, onDone }: Props) {
 
   if (!answers) return <p>Загрузка…</p>
 
-  const { name, text, type, labels = BOOL_LABELS } = questions[index]
+  const { name, text, type, labels = BOOL_LABELS, placeholder = 'Напишите ваш ответ…' } = questions[index]
   const answer = answers[name]
+  const last = index === questions.length - 1
   const setAnswer = (value: Answer) => setAnswers((prev) => ({ ...prev, [name]: value }))
 
   async function handleNext(value = answer) {
@@ -37,7 +50,7 @@ export default function Questionnaire({ questions, url, onDone }: Props) {
     setError('')
     try {
       await saveAnswer(url, name, value)
-      if (index === questions.length - 1) onDone()
+      if (last) await onDone()
       else setIndex(index + 1)
     } catch (e) {
       setError((e as Error).message)
@@ -57,6 +70,7 @@ export default function Questionnaire({ questions, url, onDone }: Props) {
       <div className="progress">
         <span style={{ width: `${((index + 1) / questions.length) * 100}%` }} />
       </div>
+      {index === 0 && intro}
       <section key={name} className="card">
         <p className="label">
           Вопрос {index + 1}/{questions.length}
@@ -73,16 +87,17 @@ export default function Questionnaire({ questions, url, onDone }: Props) {
           />
         )}
         {type === 'text' && (
-          <textarea
-            placeholder="Напишите ваш ответ…"
-            value={String(answer ?? '')}
-            onChange={(e) => setAnswer(e.target.value)}
-          />
+          <textarea placeholder={placeholder} value={String(answer ?? '')} onChange={(e) => setAnswer(e.target.value)} />
         )}
         {type === 'contact' && <ContactInput value={answer} onChange={setAnswer} />}
+        {last && children}
         {type !== 'bool' && (
-          <button className="big" disabled={answer === undefined || answer === '' || saving} onClick={() => handleNext()}>
-            Продолжить →
+          <button
+            className="big"
+            disabled={answer === undefined || answer === '' || saving || (last && !canFinish)}
+            onClick={() => handleNext()}
+          >
+            {last ? doneLabel : 'Продолжить →'}
           </button>
         )}
       </section>
