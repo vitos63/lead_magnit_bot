@@ -1,7 +1,3 @@
-from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup, WebAppInfo
+from bot.keyboards.web_app import web_app_keyboard
 
-from core.settings import settings
-
-QUESTIONS_KEYBOARD = InlineKeyboardMarkup(
-    inline_keyboard=[[InlineKeyboardButton(text="Найти мою утечку →", web_app=WebAppInfo(url=settings.WEBAPP_URL))]]
-)
+QUESTIONS_KEYBOARD = web_app_keyboard("Найти мою утечку →")

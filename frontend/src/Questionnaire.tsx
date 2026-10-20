@@ -40,7 +40,7 @@ export default function Questionnaire({
 
   if (!answers) return <p>Загрузка…</p>
 
-  const { name, text, type, labels = BOOL_LABELS, placeholder = 'Напишите ваш ответ…' } = questions[index]
+  const { name, text, type, labels = BOOL_LABELS, placeholder = 'Напишите ваш ответ…', category } = questions[index]
   const answer = answers[name]
   const last = index === questions.length - 1
   const setAnswer = (value: Answer) => setAnswers((prev) => ({ ...prev, [name]: value }))
@@ -73,7 +73,8 @@ export default function Questionnaire({
       {index === 0 && intro}
       <section key={name} className="card">
         <p className="label">
-          Вопрос {index + 1}/{questions.length}
+          Вопрос {index + 1} / {questions.length}
+          {category && ` • ${category}`}
         </p>
         <h1>{text}</h1>
         {type === 'bool' && (

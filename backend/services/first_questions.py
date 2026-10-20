@@ -4,7 +4,7 @@ from aiogram.exceptions import TelegramBadRequest
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from bot import bot
-from bot.keyboards.review import REVIEW_KEYBOARD
+from bot.keyboards.result import RESULT_KEYBOARD
 from bot.texts.answers import format_questionnaire
 from bot.texts.result import build_result, format_result
 from clients.ai.openrouter import openrouter
@@ -30,10 +30,8 @@ class FirstQuestionsService:
         return format_questionnaire(QUESTION_TEXTS, await self.get_answers(tg_id))
 
     async def get_result(self, tg_id: int) -> Result | None:
-        questions = await self.repository.get(tg_id)
-        if questions and questions.scores:
-            return build_result(Scores.model_validate(questions.scores))
-        return None
+        scores = await self.repository.get_scores(tg_id)
+        return scores and build_result(scores)
 
     @staticmethod
     async def send_result(tg_id: int, answers: str) -> None:
@@ -43,7 +41,7 @@ class FirstQuestionsService:
             await FirstQuestionsRepository(session).set_scores(tg_id, scores.model_dump())
             await user_repository.advance_stage(tg_id, Stage.GET_RESULT)
             user = await user_repository.get(tg_id)
-        await bot.send_message(tg_id, format_result(scores), reply_markup=REVIEW_KEYBOARD)
+        await bot.send_message(tg_id, format_result(scores), reply_markup=RESULT_KEYBOARD)
         await FirstQuestionsService.remove_questions_button(tg_id, user.start_message_id)
 
     @staticmethod

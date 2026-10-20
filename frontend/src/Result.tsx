@@ -19,7 +19,9 @@ export default function Result({ onPersonalReview }: { onPersonalReview: () => v
       .catch(() => setResult(null))
   }, [])
 
-  useEffect(() => window.scrollTo(0, 0), [step])
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [step])
 
   if (result === undefined) return null
 

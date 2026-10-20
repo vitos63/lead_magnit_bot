@@ -11,19 +11,12 @@ import { tgId } from './telegram'
 
 const SCREEN = new URLSearchParams(location.search).get('screen')
 
-async function loadStage() {
-  const stage = await getStage()
-  if (stage !== 'GET_RESULT' || SCREEN !== 'pre_questionnaire') return stage
-  openPreQuestionnaire()
-  return 'OPEN_PRE_QUESTIONNAIRE'
-}
-
 export default function App() {
   const [stage, setStage] = useState<string | null>(null)
   const [analyzing, setAnalyzing] = useState(false)
 
   useEffect(() => {
-    if (tgId && SCREEN !== 'admin') loadStage().then(setStage).catch(() => setStage('START'))
+    if (tgId && SCREEN !== 'admin') getStage().then(setStage).catch(() => setStage('START'))
   }, [])
 
   function handlePersonalReview() {

@@ -94,6 +94,14 @@ ul {
   font-weight: 700;
 }
 
+.checks .pending {
+  color: var(--text-secondary);
+}
+
+.checks .pending::before {
+  content: none;
+}
+
 .muted {
   color: var(--text-secondary);
 }

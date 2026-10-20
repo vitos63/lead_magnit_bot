@@ -32,6 +32,10 @@ export default function Analysis({ onReady }: { onReady: (stage: string) => void
       <h1>AI анализирует ваши ответы</h1>
       <p className="muted">Сопоставляем продукт, оффер, трафик и Telegram.</p>
       <p className="muted">Ищем слабое звено, из-за которого вы можете терять заявки.</p>
+      <ul className="checks">
+        <li>12 ответов получены</li>
+        <li className="pending">4 направления анализируются…</li>
+      </ul>
     </main>
   )
 }
