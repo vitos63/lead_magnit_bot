@@ -5,7 +5,7 @@ export type Section = { title?: string; text?: string; items?: string[] }
 export const rub = (value: number) => `${value.toLocaleString('ru-RU')} ₽`
 
 type Product = {
-  card: { title: string; text: string; bonus?: string; button: string }
+  card: { text: string; bonus?: string; button: string }
   label?: string
   title: string
   subtitle?: string
@@ -19,7 +19,6 @@ type Product = {
 export const PRODUCTS: Record<ProductId, Product> = {
   master_group: {
     card: {
-      title: 'Вариант 1 · Мастер-группа «Система заявок на органике»',
       text: 'За 4 недели соберём вашу систему привлечения заявок с моей личной обратной связью.',
       bonus: 'Бонус: AI-менеджер по продажам, который будет закрывать заявки с холодной аудитории.',
       button: 'Мастер-группа + бонус AI-менеджер →',
@@ -73,7 +72,6 @@ export const PRODUCTS: Record<ProductId, Product> = {
   },
   generator: {
     card: {
-      title: 'Вариант 2 · Генератор продаж',
       text: 'Готовые AI-скиллы, видеоинструкции и бонус для старта в Threads.',
       button: 'Генератор продаж + бонус Threads →',
     },

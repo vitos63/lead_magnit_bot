@@ -1,21 +1,18 @@
 :root {
-  --bg: #000000;
-  --surface: #242424;
-  --surface-inner: #161616;
-  --surface-raised: #3a3a3a;
-  --border: #4b4b4b;
-  --text: #f5f5f5;
-  --text-secondary: #cdcdcd;
-  --muted: #a2a2a2;
-  --accent: #4d9cab;
-  --danger: #d25c57;
-  --buy: #3690b9;
-  --on-light: #000000;
-  --error: #e5807b;
+  --bg: #f6f3ed;
+  --surface: #ffffff;
+  --border: #e3ded4;
+  --text: #19212f;
+  --text-secondary: #4b5262;
+  --muted: #8b909a;
+  --accent: #2f50e8;
+  --on-accent: #ffffff;
+  --danger: #e0483e;
+  --error: #d23c32;
   --ease: cubic-bezier(0.2, 0.8, 0.2, 1);
 
-  color-scheme: dark;
-  font: 15px/1.5 system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  color-scheme: light;
+  font: 16px/1.5 'Golos Text', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
   color: var(--text);
   background: var(--bg);
   scroll-behavior: smooth;
@@ -61,15 +58,17 @@ main > :nth-child(n + 4) {
 
 h1 {
   margin: 0;
-  font-size: 21px;
+  font-size: 26px;
   font-weight: 700;
-  line-height: 1.3;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
 }
 
 h2 {
   margin: 0 0 6px;
-  font-size: 16px;
+  font-size: 20px;
   font-weight: 700;
+  line-height: 1.25;
 }
 
 p {
@@ -93,37 +92,26 @@ ul {
 }
 
 .label {
-  font-size: 11px;
+  font-size: 14px;
   font-weight: 600;
-  color: var(--muted);
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-}
-
-.product-title {
-  text-transform: uppercase;
+  color: var(--accent);
 }
 
 .card {
   display: flex;
   flex-direction: column;
   gap: 12px;
-  padding: 18px;
-  border-radius: 18px;
+  padding: 20px;
+  border-radius: 20px;
   background: var(--surface);
-}
-
-.card .card {
-  padding: 16px;
-  border-radius: 14px;
-  background: var(--surface-inner);
+  box-shadow: 0 1px 3px rgb(25 33 47 / 0.05);
 }
 
 hr {
   width: 100%;
   margin: 4px 0;
   border: none;
-  border-top: 1px solid var(--surface-raised);
+  border-top: 1px solid var(--border);
 }
 
 .result {
@@ -157,34 +145,24 @@ button:active:not(:disabled) {
 }
 
 .big {
-  padding: 13px 18px;
-  border: 1px solid transparent;
-  border-radius: 999px;
-  background: var(--text);
-  color: var(--on-light);
+  padding: 15px 20px;
+  border: 1.5px solid transparent;
+  border-radius: 16px;
+  background: var(--accent);
+  color: var(--on-accent);
   font-weight: 600;
   cursor: pointer;
 }
 
-.card .card .big {
-  padding: 11px 16px;
-  font-size: 14px;
-}
-
 .big.secondary {
-  border-color: var(--border);
+  border-color: var(--accent);
   background: none;
-  color: var(--text);
-}
-
-.big.buy {
-  border-radius: 14px;
-  background: var(--buy);
-  color: #ffffff;
+  color: var(--accent);
 }
 
 .big:disabled {
-  background: var(--surface-raised);
+  border-color: transparent;
+  background: var(--border);
   color: var(--muted);
   cursor: default;
 }
@@ -194,16 +172,16 @@ button:active:not(:disabled) {
   padding: 8px 16px;
   border: 1px solid var(--border);
   border-radius: 999px;
-  background: none;
+  background: var(--surface);
   color: var(--text-secondary);
   font-size: 14px;
   cursor: pointer;
 }
 
 .progress {
-  height: 3px;
+  height: 4px;
   border-radius: 2px;
-  background: var(--surface);
+  background: var(--border);
   overflow: hidden;
 }
 
@@ -227,7 +205,7 @@ input[type='text'] {
   border: 1px solid var(--border);
   border-radius: 12px;
   outline: none;
-  background: var(--surface-inner);
+  background: var(--bg);
   color: var(--text);
   font: inherit;
   transition: border-color 0.2s;
@@ -274,7 +252,7 @@ input[type='text']:focus {
 
 .bar .progress {
   grid-column: 1 / -1;
-  height: 4px;
+  height: 6px;
 }
 
 .bar .progress span {
@@ -314,8 +292,8 @@ input[type='text']:focus {
 }
 
 .filters .selected {
-  background: var(--text);
-  color: var(--on-light);
+  background: var(--accent);
+  color: var(--on-accent);
   font-weight: 600;
 }
 
@@ -343,7 +321,7 @@ input[type='text']:focus {
 .spinner {
   width: 40px;
   height: 40px;
-  border: 3px solid var(--surface);
+  border: 3px solid var(--border);
   border-top-color: var(--accent);
   border-radius: 50%;
   animation: spin 1s linear infinite;

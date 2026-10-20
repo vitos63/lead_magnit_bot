@@ -21,7 +21,7 @@ export default function ReviewChoice({ onPersonalReview, onSkip }: Props) {
     <main>
       {result && (
         <section className="card">
-          <h1 className="product-title">Ваша система заявок</h1>
+          <h1>Ваша система заявок</h1>
           <div className="bars">
             {result.directions.map(({ title, score }) => (
               <div key={title} className={title === result.leak ? 'bar leak' : 'bar'}>
@@ -33,7 +33,7 @@ export default function ReviewChoice({ onPersonalReview, onSkip }: Props) {
               </div>
             ))}
           </div>
-          <h1 className="product-title">
+          <h1>
             Главная утечка — {result.leak} · {result.directions.find(({ title }) => title === result.leak)?.score}/10
           </h1>
           <p className="result">{result.text}</p>

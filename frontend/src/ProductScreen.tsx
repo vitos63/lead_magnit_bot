@@ -64,13 +64,13 @@ export default function ProductScreen({ id, price, onBack }: Props) {
       </button>
       <section className="card">
         {product.label && <p className="label">{product.label}</p>}
-        <h1 className="product-title">{product.title}</h1>
+        <h1>{product.title}</h1>
         {product.subtitle && <p className="label">{product.subtitle}</p>}
         {product.sections.map((section, i) => (
           <SectionBlock key={i} lead={i === 0} {...section} />
         ))}
         <hr />
-        <h2 className="product-title">Бонус при покупке сейчас</h2>
+        <h2>Бонус при покупке сейчас</h2>
         <SectionBlock lead {...product.bonus} />
         {price && (
           <>
@@ -84,7 +84,7 @@ export default function ProductScreen({ id, price, onBack }: Props) {
             </div>
           </>
         )}
-        <button className="big buy" disabled={!price || paying} onClick={handleBuy}>
+        <button className="big" disabled={!price || paying} onClick={handleBuy}>
           {product.button(price ? rub(price.price) : '…')}
         </button>
         {status === 'pending' && <p className="muted">Ждём подтверждения оплаты…</p>}

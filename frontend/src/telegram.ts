@@ -21,8 +21,8 @@ const user = webApp?.initDataUnsafe.user
 
 webApp?.expand()
 webApp?.disableVerticalSwipes()
-webApp?.setHeaderColor('#000000')
-webApp?.setBackgroundColor('#000000')
+webApp?.setHeaderColor('#f6f3ed')
+webApp?.setBackgroundColor('#f6f3ed')
 
 export const tgId = user?.id
 export const tgUsername = user?.username
