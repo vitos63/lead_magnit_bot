@@ -1,15 +1,9 @@
-export default function RequestSent({ onNext }: { onNext: () => void }) {
+export default function RequestSent() {
   return (
     <main className="centered">
       <h1>Ваша заявка на личный разбор отправлена!</h1>
       <p>Дарья получила результаты вашей диагностики и ответы на дополнительные вопросы.</p>
       <p>Если ваша ситуация подходит для личного разбора, она свяжется с вами по указанному контакту.</p>
-      <p className="muted">
-        А пока можете посмотреть два готовых решения, которые помогут собрать систему привлечения заявок.
-      </p>
-      <button className="big" onClick={onNext}>
-        Знаю проблему. Хочу решение →
-      </button>
     </main>
   )
 }

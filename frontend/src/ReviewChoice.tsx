@@ -1,12 +1,7 @@
 import { useEffect, useState } from 'react'
 import { getResult, type Result } from './api'
 
-type Props = {
-  onPersonalReview: () => void
-  onSkip: () => void
-}
-
-export default function ReviewChoice({ onPersonalReview, onSkip }: Props) {
+export default function ReviewChoice({ onPersonalReview }: { onPersonalReview: () => void }) {
   const [result, setResult] = useState<Result | null>()
 
   useEffect(() => {
@@ -41,9 +36,6 @@ export default function ReviewChoice({ onPersonalReview, onSkip }: Props) {
       )}
       <button className="big" onClick={onPersonalReview}>
         Хочу личный разбор →
-      </button>
-      <button className="big secondary" onClick={onSkip}>
-        Знаю проблему. Хочу решение →
       </button>
     </main>
   )

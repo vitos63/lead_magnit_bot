@@ -2,8 +2,7 @@
 
 A Telegram bot with a mini app that runs an AI diagnostic of an expert's lead generation system. The user answers 12
 questions, AI scores four areas (Product, Offer, Traffic, Telegram) and points out the main lead leak. After that the
-user can request a personal review from Darya or buy one of two products via YooKassa. The admin gets notifications and
-sees all users in the admin panel.
+user can request a personal review from Darya. The admin gets notifications and sees all users in the admin panel.
 
 ## How it works
 
@@ -17,12 +16,8 @@ flowchart TD
     review -->|Yes| pre[/"Pre-questionnaire: 4 questions and consent"/]
     pre --> notifyReq["Admin notified about the request"]
     notifyReq --> sent[/"“Request sent” screen"/]
-    sent --> offers[/"Two products"/]
-    review -->|No| offers
-    offers --> paid{"Payment<br/>succeeded?"}
-    paid -->|Yes| notifyBuy["“Payment succeeded” message<br/>and admin notification"]
-    paid -->|No| finish
-    notifyBuy --> finish(["End"])
+    sent --> finish(["End"])
+    review -->|No| finish
 ```
 
 ## Structure
@@ -47,7 +42,6 @@ docker compose up -d --build
 
 - Starts PostgreSQL, the backend (migrations are applied on startup) and the frontend on `127.0.0.1:8020`.
 - The frontend needs an HTTPS proxy (nginx, Caddy) with your domain in front of it — that address goes into `WEBAPP_URL`.
-- In the YooKassa dashboard, set the HTTP notifications URL to `https://<domain>/payments/webhook`.
 - Admin panel — send `/admin` to the bot from the `ADMIN_TG_ID` account.
 
 ### Local

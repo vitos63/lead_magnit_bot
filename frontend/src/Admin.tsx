@@ -1,28 +1,16 @@
 import { useEffect, useState } from 'react'
-import { type AdminPayment, type AdminUser, type AdminUserCard, getAdminUser, getAdminUsers } from './api'
-import { PRODUCTS, rub } from './products'
+import { type AdminUser, type AdminUserCard, getAdminUser, getAdminUsers } from './api'
 import { type Answer, BOOL_LABELS, PRE_QUESTIONS, type Question, QUESTIONS } from './questions'
 import { openTelegramLink } from './telegram'
 
 type Filter = { label: string; match: (user: AdminUser) => boolean }
 
-const succeeded = (payments: AdminPayment[]) => payments.filter((payment) => payment.status === 'succeeded')
-
 const FILTERS: Filter[] = [
   { label: 'Проходят диагностику', match: (user) => user.stage === 'START' },
-  { label: 'Получили результат', match: (user) => user.stage === 'GET_RESULT' && !user.skipped_review },
-  { label: 'Пропустили разбор', match: (user) => user.stage === 'GET_RESULT' && user.skipped_review },
+  { label: 'Получили результат', match: (user) => user.stage === 'GET_RESULT' },
   { label: 'Заполняют преданкету', match: (user) => user.stage === 'OPEN_PRE_QUESTIONNAIRE' },
   { label: 'Отправили заявку на разбор', match: (user) => user.stage === 'SEND_PRE_QUESTIONNAIRE' },
-  { label: 'Купили', match: (user) => user.stage === 'BUY_PRODUCT' },
-  { label: 'Не завершили оплату', match: (user) => user.payments.length > 0 && !succeeded(user.payments).length },
 ]
-
-const PAYMENT_STATUSES: Record<string, string> = {
-  succeeded: 'оплачен',
-  pending: 'ожидает оплаты',
-  canceled: 'отменён',
-}
 
 const formatDate = (date: string) => new Date(date).toLocaleDateString('ru-RU')
 const userName = (user: AdminUser) => (user.username ? `@${user.username}` : 'без username')
@@ -32,13 +20,11 @@ function stepLabel(user: AdminUser) {
     case 'START':
       return `Диагностика ${user.first_answers_count}/${QUESTIONS.length}`
     case 'GET_RESULT':
-      return user.skipped_review ? 'Пропустил разбор' : 'Получил результат'
+      return 'Получил результат'
     case 'OPEN_PRE_QUESTIONNAIRE':
       return `Преданкета ${user.pre_answers_count}/${PRE_QUESTIONS.length}`
-    case 'SEND_PRE_QUESTIONNAIRE':
-      return 'Заявка на разбор'
     default:
-      return `Купил: ${succeeded(user.payments).map((payment) => PRODUCTS[payment.product].title).join(', ')}`
+      return 'Заявка на разбор'
   }
 }
 
@@ -58,15 +44,12 @@ export default function Admin() {
   if (error) return <p className="error">Не загрузилось: {error}</p>
   if (!users) return <p>Загрузка…</p>
 
-  const revenue = succeeded(users.flatMap((user) => user.payments)).reduce((sum, payment) => sum + payment.amount, 0)
   const shown = filter ? users.filter(filter.match) : users
 
   return (
     <main>
       <h1>Админ-панель</h1>
-      <p className="muted">
-        Всего: {users.length} · Выручка: {rub(revenue)}
-      </p>
+      <p className="muted">Всего: {users.length}</p>
       <div className="card filters">
         {FILTERS.map((item) => (
           <button
@@ -133,17 +116,6 @@ function UserCard({ user, onBack }: { user: AdminUser; onBack: () => void }) {
             <Answers questions={PRE_QUESTIONS} answers={card.pre_answers} />
           </section>
         </>
-      )}
-      {user.payments.length > 0 && (
-        <section className="card">
-          <h2>Платежи</h2>
-          {user.payments.map((payment, i) => (
-            <p key={i}>
-              {PRODUCTS[payment.product].title} · {rub(payment.amount)} ·{' '}
-              {PAYMENT_STATUSES[payment.status] ?? payment.status} · {formatDate(payment.created_at)}
-            </p>
-          ))}
-        </section>
       )}
     </main>
   )

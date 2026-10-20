@@ -14,8 +14,3 @@ async def get_user(tg_id: int, session: AsyncSession = Depends(get_session)) -> 
     if not user:
         raise HTTPException(status_code=404)
     return user
-
-
-@router.post("/{tg_id}/skip_review")
-async def skip_review(tg_id: int, session: AsyncSession = Depends(get_session)) -> None:
-    await UserService(session).skip_review(tg_id)

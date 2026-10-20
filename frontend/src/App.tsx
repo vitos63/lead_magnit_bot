@@ -1,8 +1,7 @@
 import { useEffect, useState } from 'react'
 import Admin from './Admin'
 import Analysis from './Analysis'
-import { getStage, openPreQuestionnaire, skipReview } from './api'
-import Offers from './Offers'
+import { getStage, openPreQuestionnaire } from './api'
 import PreQuestionnaire from './PreQuestionnaire'
 import Questionnaire from './Questionnaire'
 import { QUESTIONS } from './questions'
@@ -14,7 +13,6 @@ const SCREEN = new URLSearchParams(location.search).get('screen')
 
 async function loadStage() {
   const stage = await getStage()
-  if (stage === 'GET_RESULT' && SCREEN === 'offers') skipReview()
   if (stage !== 'GET_RESULT' || SCREEN !== 'pre_questionnaire') return stage
   openPreQuestionnaire()
   return 'OPEN_PRE_QUESTIONNAIRE'
@@ -22,7 +20,6 @@ async function loadStage() {
 
 export default function App() {
   const [stage, setStage] = useState<string | null>(null)
-  const [showOffers, setShowOffers] = useState(SCREEN === 'offers')
   const [analyzing, setAnalyzing] = useState(false)
 
   useEffect(() => {
@@ -34,18 +31,12 @@ export default function App() {
     setStage('OPEN_PRE_QUESTIONNAIRE')
   }
 
-  function handleSkip() {
-    skipReview()
-    setShowOffers(true)
-  }
-
   if (!tgId) return <p>Откройте форму из Telegram-бота</p>
   if (SCREEN === 'admin') return <Admin />
   if (stage === null) return <p>Загрузка…</p>
-  if (showOffers || stage === 'BUY_PRODUCT') return <Offers />
-  if (stage === 'SEND_PRE_QUESTIONNAIRE') return <RequestSent onNext={() => setShowOffers(true)} />
+  if (stage === 'SEND_PRE_QUESTIONNAIRE') return <RequestSent />
   if (stage === 'OPEN_PRE_QUESTIONNAIRE') return <PreQuestionnaire onSent={() => setStage('SEND_PRE_QUESTIONNAIRE')} />
-  if (stage !== 'START') return <ReviewChoice onPersonalReview={handlePersonalReview} onSkip={handleSkip} />
+  if (stage !== 'START') return <ReviewChoice onPersonalReview={handlePersonalReview} />
   if (analyzing) return <Analysis onReady={setStage} />
   return <Questionnaire questions={QUESTIONS} url="/first_questions" onDone={() => setAnalyzing(true)} />
 }

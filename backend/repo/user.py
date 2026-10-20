@@ -9,7 +9,7 @@ from models.enums import Stage
 
 
 class UserRepository:
-    WITH_ANSWERS = (selectinload(User.first_questions), selectinload(User.pre_questionnaire), selectinload(User.payments))
+    WITH_ANSWERS = (selectinload(User.first_questions), selectinload(User.pre_questionnaire))
 
     def __init__(self, session: AsyncSession):
         self.session = session
@@ -41,11 +41,6 @@ class UserRepository:
     async def give_consent(self, tg_id: int) -> None:
         user = await self.get(tg_id)
         user.consent = True
-        await self.session.commit()
-
-    async def skip_review(self, tg_id: int) -> None:
-        user = await self.get(tg_id)
-        user.skipped_review = True
         await self.session.commit()
 
     async def advance_stage(self, tg_id: int, stage: Stage) -> None:

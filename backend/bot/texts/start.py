@@ -1,5 +1,5 @@
 from bot.keyboards.questions import QUESTIONS_KEYBOARD
-from bot.keyboards.review import OFFERS_KEYBOARD, REVIEW_KEYBOARD
+from bot.keyboards.review import REVIEW_KEYBOARD
 from models.enums import Stage
 
 WELCOME = """<b>Привет! Я AI-диагност, помощник Дарьи Бурдейной.</b>
@@ -33,13 +33,11 @@ REQUEST_SENT = """<b>Ваша заявка на личный разбор отп
 
 Дарья получила результаты вашей диагностики и ответы на дополнительные вопросы.
 
-Если ваша ситуация подходит для личного разбора, она свяжется с вами по указанному контакту.
-
-А пока можете посмотреть два готовых решения, которые помогут собрать систему привлечения заявок."""
+Если ваша ситуация подходит для личного разбора, она свяжется с вами по указанному контакту."""
 
 START_MESSAGES = {
     Stage.START: (WELCOME, QUESTIONS_KEYBOARD),
     Stage.GET_RESULT: (REVIEW, REVIEW_KEYBOARD),
     Stage.OPEN_PRE_QUESTIONNAIRE: (REVIEW, REVIEW_KEYBOARD),
-    Stage.SEND_PRE_QUESTIONNAIRE: (REQUEST_SENT, OFFERS_KEYBOARD),
+    Stage.SEND_PRE_QUESTIONNAIRE: (REQUEST_SENT, None),
 }

@@ -75,20 +75,8 @@ p {
   margin: 0;
 }
 
-ul {
-  margin: 0;
-  padding-left: 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-
 .muted {
   color: var(--text-secondary);
-}
-
-.lead {
-  font-weight: 700;
 }
 
 .label {
@@ -107,25 +95,8 @@ ul {
   box-shadow: 0 1px 3px rgb(25 33 47 / 0.05);
 }
 
-hr {
-  width: 100%;
-  margin: 4px 0;
-  border: none;
-  border-top: 1px solid var(--border);
-}
-
 .result {
   white-space: pre-line;
-}
-
-.price s {
-  color: var(--muted);
-}
-
-.price strong {
-  margin-left: 8px;
-  font-size: 24px;
-  font-weight: 700;
 }
 
 button {
