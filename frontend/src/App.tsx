@@ -6,6 +6,7 @@ import Offers from './Offers'
 import PreQuestionnaire from './PreQuestionnaire'
 import Questionnaire from './Questionnaire'
 import { QUESTIONS } from './questions'
+import RequestSent from './RequestSent'
 import ReviewChoice from './ReviewChoice'
 import { tgId } from './telegram'
 
@@ -41,7 +42,8 @@ export default function App() {
   if (!tgId) return <p>Откройте форму из Telegram-бота</p>
   if (SCREEN === 'admin') return <Admin />
   if (stage === null) return <p>Загрузка…</p>
-  if (showOffers || stage === 'SEND_PRE_QUESTIONNAIRE' || stage === 'BUY_PRODUCT') return <Offers />
+  if (showOffers || stage === 'BUY_PRODUCT') return <Offers />
+  if (stage === 'SEND_PRE_QUESTIONNAIRE') return <RequestSent onNext={() => setShowOffers(true)} />
   if (stage === 'OPEN_PRE_QUESTIONNAIRE') return <PreQuestionnaire onSent={() => setStage('SEND_PRE_QUESTIONNAIRE')} />
   if (stage !== 'START') return <ReviewChoice onPersonalReview={handlePersonalReview} onSkip={handleSkip} />
   if (analyzing) return <Analysis onReady={setStage} />

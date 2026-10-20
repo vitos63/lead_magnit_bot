@@ -38,12 +38,12 @@ class FirstQuestionsService:
     @staticmethod
     async def send_result(tg_id: int, answers: str) -> None:
         scores = Scores.model_validate_json(await openrouter.ask_json(RESULT_PROMPT, answers))
-        await bot.send_message(tg_id, format_result(scores), reply_markup=REVIEW_KEYBOARD)
         async with SessionLocal() as session:
             user_repository = UserRepository(session)
             await FirstQuestionsRepository(session).set_scores(tg_id, scores.model_dump())
             await user_repository.advance_stage(tg_id, Stage.GET_RESULT)
             user = await user_repository.get(tg_id)
+        await bot.send_message(tg_id, format_result(scores), reply_markup=REVIEW_KEYBOARD)
         await FirstQuestionsService.remove_questions_button(tg_id, user.start_message_id)
 
     @staticmethod
