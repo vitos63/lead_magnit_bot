@@ -8,7 +8,9 @@ class Settings(BaseSettings):
 
     DATABASE_URL: str
     BOT_TOKEN: str
+    BOT_USERNAME: str
     ADMIN_TG_ID: int
+    CHANNEL_ID: str
     WEBAPP_URL: str
     OPENROUTER_API_KEY: str
 

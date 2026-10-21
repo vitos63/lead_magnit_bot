@@ -3,10 +3,12 @@ from pathlib import Path
 from aiogram import F, Router
 from aiogram.enums import ParseMode
 from aiogram.filters import Command, CommandStart
-from aiogram.types import FSInputFile, Message
+from aiogram.types import FSInputFile, LinkPreviewOptions, Message
 
 from bot.keyboards.admin import ADMIN_KEYBOARD
+from bot.keyboards.post import POST_KEYBOARD
 from bot.keyboards.result import RESULT_KEYBOARDS
+from bot.texts.post import POST
 from bot.texts.result import format_result
 from bot.texts.start import START_MESSAGES
 from core.database import SessionLocal
@@ -19,6 +21,7 @@ from services.user import UserService
 router = Router()
 
 WELCOME_PHOTO = FSInputFile(Path(__file__).parent / "media" / "start.jpg")
+POST_PREVIEW = LinkPreviewOptions(url=f"{settings.WEBAPP_URL}/post.jpg", prefer_large_media=True, show_above_text=True)
 
 
 @router.message(CommandStart())
@@ -41,3 +44,11 @@ async def start(message: Message) -> None:
 @router.message(Command("admin"), F.from_user.id == settings.ADMIN_TG_ID)
 async def admin(message: Message) -> None:
     await message.answer("Админ-панель", reply_markup=ADMIN_KEYBOARD)
+
+
+@router.message(Command("post"), F.from_user.id == settings.ADMIN_TG_ID)
+async def post(message: Message) -> None:
+    await message.bot.send_message(
+        settings.CHANNEL_ID, POST, reply_markup=POST_KEYBOARD, link_preview_options=POST_PREVIEW, parse_mode=ParseMode.HTML
+    )
+    await message.answer("Пост опубликован")

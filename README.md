@@ -43,6 +43,9 @@ docker compose up -d --build
 - Starts PostgreSQL, the backend (migrations are applied on startup) and the frontend on `127.0.0.1:8020`.
 - The frontend needs an HTTPS proxy (nginx, Caddy) with your domain in front of it — that address goes into `WEBAPP_URL`.
 - Admin panel — send `/admin` to the bot from the `ADMIN_TG_ID` account.
+- Channel post — send `/post` from the same account: the bot publishes the text from `bot/texts/post.py` to
+  `CHANNEL_ID` with `frontend/public/post.jpg` as a link preview above it and a button to the bot. The bot must be a
+  channel admin with the right to post messages.
 
 ### Local
 
