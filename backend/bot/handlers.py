@@ -1,7 +1,9 @@
+from pathlib import Path
+
 from aiogram import F, Router
 from aiogram.enums import ParseMode
 from aiogram.filters import Command, CommandStart
-from aiogram.types import Message
+from aiogram.types import FSInputFile, Message
 
 from bot.keyboards.admin import ADMIN_KEYBOARD
 from bot.keyboards.result import RESULT_KEYBOARDS
@@ -10,10 +12,13 @@ from bot.texts.start import START_MESSAGES
 from core.database import SessionLocal
 from core.settings import settings
 from models import User
+from models.enums import Stage
 from repo.first_questions import FirstQuestionsRepository
 from services.user import UserService
 
 router = Router()
+
+WELCOME_PHOTO = FSInputFile(Path(__file__).parent / "media" / "start.jpg")
 
 
 @router.message(CommandStart())
@@ -26,7 +31,10 @@ async def start(message: Message) -> None:
         else:
             scores = await FirstQuestionsRepository(session).get_scores(user.tg_id)
             text, keyboard = format_result(scores), RESULT_KEYBOARDS[user.stage]
-        sent = await message.answer(text, reply_markup=keyboard, parse_mode=ParseMode.HTML)
+        if user.stage == Stage.START:
+            sent = await message.answer_photo(WELCOME_PHOTO, caption=text, reply_markup=keyboard, parse_mode=ParseMode.HTML)
+        else:
+            sent = await message.answer(text, reply_markup=keyboard, parse_mode=ParseMode.HTML)
         await service.set_start_message_id(user.tg_id, sent.message_id)
 
 
